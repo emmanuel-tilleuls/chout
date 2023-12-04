@@ -1,0 +1,23 @@
+meta {
+  name: (API) Create Post
+  type: http
+  seq: 5
+}
+
+post {
+  url: {{api_url}}/posts
+  body: json
+  auth: none
+}
+
+headers {
+  Content-Type: application/ld+json
+}
+
+body:json {
+  {
+    "author": "me",
+    "message": "my message",
+    "createdAt": "2023-12-04 11:35:00"
+  }
+}
