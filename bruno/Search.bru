@@ -1,0 +1,16 @@
+meta {
+  name: Search
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{es_url}}
+  body: none
+  auth: none
+}
+
+auth:basic {
+  username: {{es_user}}
+  password: {{es_password}}
+}

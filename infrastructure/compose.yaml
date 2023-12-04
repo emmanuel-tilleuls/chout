@@ -1,0 +1,25 @@
+version: '3'
+name: chout
+
+services:
+  database:
+    image: elasticsearch:8.11.1
+    environment:
+      discovery.type: single-node
+      ELASTIC_PASSWORD: secretP4ssw0rd
+    volumes:
+      - database_data:/usr/share/elasticsearch/data
+    ports:
+      - 9200:9200
+      - 9300:9300
+    networks:
+      - app
+
+
+volumes:
+###> doctrine/doctrine-bundle ###
+  database_data:
+###< doctrine/doctrine-bundle ###
+
+networks:
+  app:

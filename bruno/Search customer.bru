@@ -1,0 +1,16 @@
+meta {
+  name: Search customer
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{es_url}}/customer/_doc/2GIdNIwBBVNJEvlWeUtB
+  body: none
+  auth: none
+}
+
+auth:basic {
+  username: {{es_user}}
+  password: {{es_password}}
+}
