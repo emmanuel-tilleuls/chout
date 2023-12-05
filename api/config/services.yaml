@@ -23,11 +23,6 @@ services:
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
 
-
-    App\State\PostProvider:
-        arguments:
-            $postIndex: '@fos_elastica.index.post'
-
     App\State\PostProcessor:
         arguments:
-            $postIndex: '@fos_elastica.index.post'
+            $persistProcessor: '@api_platform.doctrine.orm.state.persist_processor'

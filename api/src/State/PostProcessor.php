@@ -5,36 +5,40 @@ namespace App\State;
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\Metadata\Post as PostOperation;
 use ApiPlatform\State\ProcessorInterface;
-use App\ApiResource\Post;
-use Elastica\Document;
-use FOS\ElasticaBundle\Elastica\Index;
-use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-use Symfony\Component\Uid\Uuid;
+use App\Entity\Post;
+use Symfony\Component\Mercure\HubInterface;
+use Symfony\Component\Mercure\Update;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Serializer\SerializerInterface;
 
 class PostProcessor implements ProcessorInterface
 {
     public function __construct(
-        private readonly Index $postIndex,
-        private readonly NormalizerInterface $normalizer,
+        private readonly ProcessorInterface $persistProcessor,
+        private readonly HubInterface $hub,
+        private readonly UrlGeneratorInterface $urlGenerator,
+
+        private readonly SerializerInterface $serializer,
     ) {
     }
 
-    public function process(mixed $data, Operation $operation, array $uriVariables = [], array $context = [])
+    public function process(mixed $data, Operation $operation, array $uriVariables = [], array $context = []): ?Post
     {
         if (!$operation instanceof PostOperation) {
-            throw new \LogicException('Should not be here');
+            throw new \LogicException();
         }
 
         if (!$data instanceof Post) {
-            throw new \LogicException('Should not be here');
+            throw new \LogicException();
         }
 
-        $id = Uuid::v7();
+        $this->persistProcessor->process($data, $operation, $uriVariables, $context);
 
-        $data->setId($id);
-
-        $document = new Document($id, $this->normalizer->normalize($data));
-        $this->postIndex->addDocument($document);
+        $update = new Update(
+            $this->urlGenerator->generate('_api_/posts{._format}_get_collection', [], UrlGeneratorInterface::ABSOLUTE_URL),
+            $this->serializer->serialize($data, 'json')
+        );
+        $this->hub->publish($update);
 
         return $data;
     }
