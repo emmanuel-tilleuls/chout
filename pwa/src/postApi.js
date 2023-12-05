@@ -14,9 +14,9 @@ export async function fetchPosts() {
     }));
 }
 
-export async function createPost({message}) {
+export async function createPost({message, author}) {
     const post = {
-        author: 'TODO',
+        author,
         message,
         createdAt: new Date(),
     }
