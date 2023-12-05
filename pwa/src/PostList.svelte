@@ -18,6 +18,7 @@
         eventSource.onmessage = (e) => {
             console.log(postListElement, e);
             const postData = JSON.parse(e.data);
+            postData.createdAt = new Date(Date.parse(postData.createdAt));
             posts = [...posts, postData];
         };
     })
