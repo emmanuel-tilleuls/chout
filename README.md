@@ -1,15 +1,15 @@
 # Application de chat (Chout)
 
 ## Utilisation
-- dans répertoire infrastructure
+- dans répertoire `infrastructure`
   - `docker compose up --wait`
 
-- dans répertoire api
+- dans répertoire `api`
   - `symfony console doctrine:schema:create`
   - `symfony console doctrine:fixture:load`
   - `symfony serve --no-tls -d`
 
-- dans répertoire pwa
+- dans répertoire `pwa`
   - `npm install`
   - `npm run dev`
 
